@@ -41,6 +41,7 @@
                 android:layout_marginTop="10dp" />
 
             <View
+                android:id="@+id/separator1"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_below="@id/fragment_movie_header"
@@ -53,7 +54,7 @@
                 android:id="@+id/text_view_movie_trailers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_movie_header"
+                android:layout_below="@+id/separator1"
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
@@ -66,12 +67,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_below="@+id/text_view_movie_trailers"
+                android:layout_marginBottom="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:divider="@color/dim_foreground_disabled_material_dark"
                 android:dividerHeight="1dp"
-                android:nestedScrollingEnabled="true"
-                android:layout_marginBottom="30dp" />
+                android:nestedScrollingEnabled="true" />
+
+            <View
+                android:id="@+id/separator2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/list_view_movie_trailers"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@color/bright_foreground_disabled_material_light" />
+
+            <TextView
+                android:id="@+id/text_view_movie_reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/separator2"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/reviews"
+                android:textSize="20sp" />
+
+            <ListView
+                android:id="@+id/list_view_movie_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/text_view_movie_reviews"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:divider="@color/dim_foreground_disabled_material_dark"
+                android:dividerHeight="1dp"
+                android:nestedScrollingEnabled="true" />
 
         </RelativeLayout>
     </ScrollView>
