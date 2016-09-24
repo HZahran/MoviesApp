@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,10 +30,15 @@ public class MovieHeaderFragment extends Fragment {
     private String movieVoteAverage;
     private String movieOverview;
 
+
     private ImageView moviePosterImgView;
     private TextView movieReleaseDateTextView;
     private TextView movieVoteAverageTextView;
     private TextView movieOverviewTextView;
+
+    private ImageButton favoriteImageButton;
+    private TextView favoriteTextView;
+    private boolean isFavorite;
 
     private MyApplication app;
 
@@ -44,7 +50,7 @@ public class MovieHeaderFragment extends Fragment {
         MovieHeaderFragment fragment = new MovieHeaderFragment();
         Bundle args = new Bundle();
         args.putString(MOVIE_POSTER_PATH, moviePosterPath);
-        args.putString(MOVIE_RELEASE_DATE, movieReleaseDate+"");
+        args.putString(MOVIE_RELEASE_DATE, movieReleaseDate + "");
         args.putString(MOVIE_VOTE_AVERAGE, movieVoteAverage + "/10");
         args.putString(MOVIE_OVERVIEW, movieOverview);
         fragment.setArguments(args);
@@ -85,9 +91,25 @@ public class MovieHeaderFragment extends Fragment {
         //Vote Avg
         movieVoteAverageTextView.setText(movieVoteAverage);
 
+        //Favorite
+        favoriteImageButton = (ImageButton) view.findViewById(R.id.image_button_movie_favorite);
+        favoriteTextView = (TextView) view.findViewById(R.id.text_view_movie_favorite);
+        favoriteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFavorite();
+            }
+        });
+
         //OverView
         movieOverviewTextView.setText(movieOverview);
         return view;
+    }
+
+    public void toggleFavorite() {
+        favoriteImageButton.setImageResource(isFavorite ? android.R.drawable.star_big_on : android.R.drawable.star_big_off);
+        favoriteTextView.setText(isFavorite ? "Added To Favorites" : "Add To Favorites");
+        isFavorite = !isFavorite;
     }
 
 }

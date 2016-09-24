@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +22,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import project.udacity.com.moviesapp.Adapters.ReviewsAdapter;
@@ -38,6 +38,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private ListView trailerListView;
     private ListView reviewListView;
     private Dialog reviewDialog;
+
     MyApplication app;
 
     @Override
@@ -56,6 +57,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         //Header
         MovieHeaderFragment movieHeaderFragment = MovieHeaderFragment.newInstance(movie.getPoster_path(), movie.getRelease_date(), movie.getVote_average(), movie.getOverview());
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_movie_header, movieHeaderFragment).commit();
+
 
         //Trailers
         trailerListView = (ListView) findViewById(R.id.list_view_movie_trailers);
@@ -117,6 +119,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         app.addToRequestQueue(videosRequest);
         app.addToRequestQueue(reviewsRequest);
 
+
     }
 
     public void reviewDialog(final List<Review> reviewsData) {
@@ -144,6 +147,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     protected void onStop() {
