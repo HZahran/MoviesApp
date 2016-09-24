@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import project.udacity.com.moviesapp.Adapters.ReviewsAdapter;
@@ -36,6 +37,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private TextView movieTitleTextView;
     private ListView trailerListView;
     private ListView reviewListView;
+    private Dialog reviewDialog;
     MyApplication app;
 
     @Override
@@ -101,29 +103,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         reviewListView.setAdapter(reviewsAdapter);
 
                         //Review Dialog
-                        AlertDialog.Builder reviewDialogBuilder = new AlertDialog.Builder(MovieDetailsActivity.this);
-                        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                        View reviewDialogView = inflater.inflate(R.layout.dialog_review, null);
-                        reviewDialogBuilder.setView(reviewDialogView);
-
-                        reviewDialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                        final Dialog reviewDialog = reviewDialogBuilder.create();
-
-                        final TextView reviewDialogContentTextView = (TextView) reviewDialogView.findViewById(R.id.text_view_dialog_review_content);
-
-                        reviewListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                reviewDialog.setTitle(reviewsData.get(position).getAuthor());
-                                reviewDialogContentTextView.setText(reviewsData.get(position).getContent());
-                                reviewDialog.show();
-                            }
-                        });
+                        reviewDialog(reviewsData);
 
                     }
                 }, new Response.ErrorListener() {
@@ -137,5 +117,37 @@ public class MovieDetailsActivity extends AppCompatActivity {
         app.addToRequestQueue(videosRequest);
         app.addToRequestQueue(reviewsRequest);
 
+    }
+
+    public void reviewDialog(final List<Review> reviewsData) {
+        AlertDialog.Builder reviewDialogBuilder = new AlertDialog.Builder(MovieDetailsActivity.this);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View reviewDialogView = inflater.inflate(R.layout.dialog_review, null);
+        reviewDialogBuilder.setView(reviewDialogView);
+
+        reviewDialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        reviewDialog = reviewDialogBuilder.create();
+
+        final TextView reviewDialogContentTextView = (TextView) reviewDialogView.findViewById(R.id.text_view_dialog_review_content);
+
+        reviewListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                reviewDialog.setTitle(reviewsData.get(position).getAuthor());
+                reviewDialogContentTextView.setText(reviewsData.get(position).getContent());
+                reviewDialog.show();
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        reviewDialog.dismiss();
     }
 }

@@ -1,5 +1,6 @@
 package project.udacity.com.moviesapp.Adapters;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -55,8 +56,14 @@ public class VideosAdapter extends BaseAdapter {
         trailerImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sendIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + video.getKey()));
-                mContext.startActivity(sendIntent);
+                Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video.getKey()));
+                Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://www.youtube.com/watch?v=" + video.getKey()));
+                try {
+                    mContext.startActivity(appIntent);
+                } catch (ActivityNotFoundException ex) {
+                    mContext.startActivity(webIntent);
+                }
             }
         });
         return view;

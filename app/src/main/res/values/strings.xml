@@ -13,4 +13,5 @@
     <string name="reviews">Reviews:</string>
     <string name="review_content">Review Content</string>
     <string name="review_title">Review Title</string>
+    <string name="review_dialog_content">Review Dialog Content</string>
 </resources>
