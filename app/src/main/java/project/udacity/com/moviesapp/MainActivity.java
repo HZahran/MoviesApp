@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +23,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import project.udacity.com.moviesapp.Adapters.MoviesAdapter;
 import project.udacity.com.moviesapp.Models.MoviesModel;
@@ -44,53 +44,57 @@ public class MainActivity extends AppCompatActivity {
 
         moviesGridView = (GridView) findViewById(R.id.grid_view_movies);
 
-        if (!isOnline())
-            Toast.makeText(MainActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
-        else
-            getMoviesRequest();
+        getMoviesRequest();
     }
 
     public void getMoviesRequest() {
+        if (!isOnline())
+            Toast.makeText(MainActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
 
-        String moviesUrl = app.MOVIES_BASE_URL + sortingType + app.API_KEY_QUERY;
-        JsonObjectRequest moviesRequest = new JsonObjectRequest
-                (Request.Method.GET, moviesUrl, null, new Response.Listener<JSONObject>() {
+        else {
+            String moviesUrl = app.MOVIES_BASE_URL + sortingType + app.API_KEY_QUERY;
+            JsonObjectRequest moviesRequest = new JsonObjectRequest
+                    (Request.Method.GET, moviesUrl, null, new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
+                        @Override
+                        public void onResponse(JSONObject response) {
 
-                        Toast.makeText(MainActivity.this, "Successfully Fetched Movies", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Successfully Fetched Movies", Toast.LENGTH_SHORT).show();
 
-                        final MoviesModel moviesModel = app.getGson().fromJson(response.toString(), MoviesModel.class);
+                            final MoviesModel moviesModel = app.getGson().fromJson(response.toString(), MoviesModel.class);
 
-                        final List<Movie> moviesData = moviesModel.getResults();
-                        ArrayList<String> moviesPosterPaths = new ArrayList<String>();
+                            updateView(moviesModel.getResults());
 
-                        for (Movie movie : moviesData)
-                            moviesPosterPaths.add(movie.getPoster_path());
+                        }
+                    }, new Response.ErrorListener() {
 
-                        moviesGridView.setAdapter(new MoviesAdapter(MainActivity.this, moviesPosterPaths, app));
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            app.addToRequestQueue(moviesRequest);
+        }
+    }
 
-                        moviesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(MainActivity.this, moviesData.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+    public void updateView(final ArrayList<Movie> moviesData) {
+        ArrayList<String> moviesPosterPaths = new ArrayList<String>();
 
-                                Intent i = new Intent(MainActivity.this, MovieDetailsActivity.class);
-                                i.putExtra(app.MOVIE_DETAILS, app.getGson().toJson(moviesData.get(position)));
+        for (Movie movie : moviesData)
+            moviesPosterPaths.add(movie.getPoster_path());
 
-                                startActivity(i);
-                            }
-                        });
-                    }
-                }, new Response.ErrorListener() {
+        moviesGridView.setAdapter(new MoviesAdapter(MainActivity.this, moviesPosterPaths, app));
+        moviesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, moviesData.get(position).getTitle(), Toast.LENGTH_SHORT).show();
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-        app.addToRequestQueue(moviesRequest);
+                Intent i = new Intent(MainActivity.this, MovieDetailsActivity.class);
+                i.putExtra(app.MOVIE_DETAILS, app.getGson().toJson(moviesData.get(position)));
+
+                startActivity(i);
+            }
+        });
     }
 
     public boolean isOnline() {
@@ -120,6 +124,16 @@ public class MainActivity extends AppCompatActivity {
                 if (!sortingType.equals("top_rated")) {
                     sortingType = "top_rated";
                     getMoviesRequest();
+                }
+                return true;
+            case R.id.favorites:
+                if (!sortingType.equals("favorite")) {
+                    sortingType = "favorite";
+                    ArrayList<Movie> favorites = app.getFavorites();
+                    if (favorites != null)
+                        updateView(favorites);
+                    else
+                        Toast.makeText(MainActivity.this, "No Favorites Found", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             default:

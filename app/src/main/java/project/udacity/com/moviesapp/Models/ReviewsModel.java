@@ -2,13 +2,12 @@
 package project.udacity.com.moviesapp.Models;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ReviewsModel {
 
     private Integer id;
     private Integer page;
-    private List<Review> results = new ArrayList<Review>();
+    private ArrayList<Review> results = new ArrayList<Review>();
     private Integer total_pages;
     private Integer total_results;
 
@@ -43,14 +42,14 @@ public class ReviewsModel {
     /**
      * @return The results
      */
-    public List<Review> getResults() {
+    public ArrayList<Review> getResults() {
         return results;
     }
 
     /**
      * @param results The results
      */
-    public void setResults(List<Review> results) {
+    public void setResults(ArrayList<Review> results) {
         this.results = results;
     }
 

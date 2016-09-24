@@ -48,16 +48,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         app = (MyApplication) getApplication();
 
-        Movie movie = app.getGson().fromJson(getIntent().getStringExtra(app.MOVIE_DETAILS), Movie.class);
+        String movieJSON = getIntent().getStringExtra(app.MOVIE_DETAILS);
+        Movie movie = app.getGson().fromJson(movieJSON, Movie.class);
 
         //Title
         movieTitleTextView = (TextView) findViewById(R.id.text_view_movie_title);
         movieTitleTextView.setText(movie.getTitle());
 
         //Header
-        MovieHeaderFragment movieHeaderFragment = MovieHeaderFragment.newInstance(movie.getPoster_path(), movie.getRelease_date(), movie.getVote_average(), movie.getOverview());
+        MovieHeaderFragment movieHeaderFragment = MovieHeaderFragment.newInstance(movieJSON);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_movie_header, movieHeaderFragment).commit();
-
 
         //Trailers
         trailerListView = (ListView) findViewById(R.id.list_view_movie_trailers);
@@ -152,6 +152,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        if(reviewDialog != null)
         reviewDialog.dismiss();
     }
 }
