@@ -62,10 +62,11 @@
                 android:text="@string/trailers"
                 android:textSize="20sp" />
 
+
             <ListView
                 android:id="@+id/list_view_movie_trailers"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:layout_below="@+id/text_view_movie_trailers"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="30dp"

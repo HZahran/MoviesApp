@@ -12,27 +12,28 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import project.udacity.com.moviesapp.Models.Review;
 import project.udacity.com.moviesapp.Models.Video;
 import project.udacity.com.moviesapp.MyApplication;
 import project.udacity.com.moviesapp.R;
 
-public class VideoAdapter extends BaseAdapter {
+public class ReviewsAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Video> videos;
+    private List<Review> reviews;
     private final LayoutInflater inflater;
 
     private MyApplication app;
 
-    public VideoAdapter(Context c, List<Video> videos, MyApplication app) {
+    public ReviewsAdapter(Context c, List<Review> reviews, MyApplication app) {
         mContext = c;
         this.app = app;
-        this.videos = videos;
+        this.reviews = reviews;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
     public int getCount() {
-        return videos.size();
+        return reviews.size();
     }
 
     public Object getItem(int position) {
@@ -44,21 +45,15 @@ public class VideoAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.list_row_trailer, null);
+        View view = inflater.inflate(R.layout.list_row_review, null);
 
-        final Video video = videos.get(position);
-        ImageButton trailerImageBtn = (ImageButton) view.findViewById(R.id.image_button_trailer);
-        TextView trailerNameTextView = (TextView) view.findViewById(R.id.text_view_trailer_name);
+        final Review review = reviews.get(position);
+        TextView reviewTitleTextView = (TextView) view.findViewById(R.id.text_view_review_title);
+        TextView reviewContentTextView = (TextView) view.findViewById(R.id.text_view_review_content);
 
-        trailerNameTextView.setText(video.getName());
+        reviewTitleTextView.setText(review.getAuthor());
+        reviewContentTextView.setText(review.getContent());
 
-        trailerImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent sendIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + video.getKey()));
-                mContext.startActivity(sendIntent);
-            }
-        });
         return view;
     }
 
