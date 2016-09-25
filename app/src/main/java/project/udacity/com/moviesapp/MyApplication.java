@@ -76,6 +76,8 @@ public class MyApplication extends Application {
     public void removeFavorite(Movie movie) {
 
         ArrayList<Movie> favoritesList = getFavorites();
+
+
         if (favoritesList != null) {
             favoritesList.remove(movie);
             saveFavorites(favoritesList);

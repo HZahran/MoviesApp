@@ -71,8 +71,9 @@ public class MovieHeaderFragment extends Fragment {
             movieOverview = movie.getOverview();
 
             ArrayList<Movie> movies = app.getFavorites();
-            for (Movie favorite : movies)
-               isFavorite |= movie.getId().equals(favorite.getId());
+            if (movies != null)
+                for (Movie favorite : movies)
+                    isFavorite |= movie.getId().equals(favorite.getId());
         }
     }
 
@@ -99,8 +100,8 @@ public class MovieHeaderFragment extends Fragment {
         //Favorite
         favoriteImageButton = (ImageButton) view.findViewById(R.id.image_button_movie_favorite);
         favoriteTextView = (TextView) view.findViewById(R.id.text_view_movie_favorite);
-        favoriteImageButton.setImageResource(isFavorite? android.R.drawable.star_big_on:android.R.drawable.star_big_off);
-        favoriteTextView.setText(isFavorite? "Favorite":"Add To Favorites");
+        favoriteImageButton.setImageResource(isFavorite ? android.R.drawable.star_big_on : android.R.drawable.star_big_off);
+        favoriteTextView.setText(isFavorite ? "Favorite" : "Add To Favorites");
 
         favoriteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override

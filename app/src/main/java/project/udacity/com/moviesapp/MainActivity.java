@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -28,21 +29,28 @@ import project.udacity.com.moviesapp.Adapters.MoviesAdapter;
 import project.udacity.com.moviesapp.Models.MoviesModel;
 import project.udacity.com.moviesapp.Models.Movie;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MoviesListFragment.OnMovieListener {
+
+    private boolean mTwoPane;
 
     private MyApplication app;
-    private GridView moviesGridView;
 
+    private MoviesListFragment listFragment;
     private String sortingType = "popular";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FrameLayout flPanel2 = (FrameLayout) findViewById(R.id.flPanel_Two);
+        mTwoPane = flPanel2 != null;
+
+        listFragment = new MoviesListFragment();
+        listFragment.setmListener(this);
+        getSupportFragmentManager().beginTransaction().add(R.id.flPanel_One, listFragment).commit();
 
         app = (MyApplication) getApplication();
 
-        moviesGridView = (GridView) findViewById(R.id.grid_view_movies);
 
         getMoviesRequest();
     }
@@ -52,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
 
         else {
-            String moviesUrl = app.MOVIES_BASE_URL + sortingType + app.API_KEY_QUERY;
+            String moviesUrl = MyApplication.MOVIES_BASE_URL + sortingType + MyApplication.API_KEY_QUERY;
             JsonObjectRequest moviesRequest = new JsonObjectRequest
                     (Request.Method.GET, moviesUrl, null, new Response.Listener<JSONObject>() {
 
@@ -63,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
                             final MoviesModel moviesModel = app.getGson().fromJson(response.toString(), MoviesModel.class);
 
-                            updateView(moviesModel.getResults());
+                            listFragment.updateView(moviesModel.getResults());
 
                         }
                     }, new Response.ErrorListener() {
@@ -77,25 +85,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void updateView(final ArrayList<Movie> moviesData) {
-        ArrayList<String> moviesPosterPaths = new ArrayList<String>();
-
-        for (Movie movie : moviesData)
-            moviesPosterPaths.add(movie.getPoster_path());
-
-        moviesGridView.setAdapter(new MoviesAdapter(MainActivity.this, moviesPosterPaths, app));
-        moviesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, moviesData.get(position).getTitle(), Toast.LENGTH_SHORT).show();
-
-                Intent i = new Intent(MainActivity.this, MovieDetailsActivity.class);
-                i.putExtra(app.MOVIE_DETAILS, app.getGson().toJson(moviesData.get(position)));
-
-                startActivity(i);
-            }
-        });
-    }
 
     public boolean isOnline() {
         ConnectivityManager cm =
@@ -131,13 +120,31 @@ public class MainActivity extends AppCompatActivity {
                     sortingType = "favorite";
                     ArrayList<Movie> favorites = app.getFavorites();
                     if (favorites != null)
-                        updateView(favorites);
+                        listFragment.updateView(favorites);
                     else
                         Toast.makeText(MainActivity.this, "No Favorites Found", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onMovieSelected(Movie movie) {
+        if (mTwoPane) {
+            MovieDetailsFragment listFragment = new MovieDetailsFragment();
+            Bundle b = new Bundle();
+            b.putString(MyApplication.MOVIE_DETAILS, app.getGson().toJson(movie));
+            listFragment.setArguments(b);
+            getSupportFragmentManager().beginTransaction().add(R.id.flPanel_One, listFragment).commit();
+        } else {
+            Toast.makeText(MainActivity.this, movie.getTitle(), Toast.LENGTH_SHORT).show();
+
+            Intent i = new Intent(MainActivity.this, MovieDetailsActivity.class);
+            i.putExtra(MyApplication.MOVIE_DETAILS, app.getGson().toJson(movie));
+
+            startActivity(i);
         }
     }
 }
