@@ -63,11 +63,7 @@ public class MyApplication extends Application {
             favoritesList = new ArrayList<Movie>();
 
 
-        boolean exists = false;
-        for (Movie favoriteMovie : favoritesList)
-            exists |= favoriteMovie.getId().equals(movie.getId());
-
-        if (!exists) {
+        if (!favoritesList.contains(movie)) {
             favoritesList.add(movie);
             saveFavorites(favoritesList);
         }
@@ -76,7 +72,6 @@ public class MyApplication extends Application {
     public void removeFavorite(Movie movie) {
 
         ArrayList<Movie> favoritesList = getFavorites();
-
 
         if (favoritesList != null) {
             favoritesList.remove(movie);

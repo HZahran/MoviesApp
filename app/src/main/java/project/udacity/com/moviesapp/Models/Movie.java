@@ -217,4 +217,9 @@ public class Movie {
         this.vote_average = vote_average;
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.getId().equals(((Movie) obj).getId());
+    }
 }
