@@ -62,9 +62,15 @@ public class MyApplication extends Application {
         if (favoritesList == null)
             favoritesList = new ArrayList<Movie>();
 
-        favoritesList.add(movie);
 
-        saveFavorites(favoritesList);
+        boolean exists = false;
+        for (Movie favoriteMovie : favoritesList)
+            exists |= favoriteMovie.getId().equals(movie.getId());
+
+        if (!exists) {
+            favoritesList.add(movie);
+            saveFavorites(favoritesList);
+        }
     }
 
     public void removeFavorite(Movie movie) {
@@ -100,8 +106,7 @@ public class MyApplication extends Application {
         editor.commit();
     }
 
-    private void removeAllFavorites()
-    {
+    private void removeAllFavorites() {
         editor.remove(FAVORITE_MOVIES);
         editor.commit();
     }
