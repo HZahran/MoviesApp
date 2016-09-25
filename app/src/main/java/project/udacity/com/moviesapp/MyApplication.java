@@ -39,7 +39,6 @@ public class MyApplication extends Application {
         getRequestQueue();
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPref.edit();
-        removeAllFavorites();
     }
 
     public Gson getGson() {
@@ -84,7 +83,6 @@ public class MyApplication extends Application {
         if (sharedPref.contains(FAVORITE_MOVIES)) {
 
             String favoritesJSON = sharedPref.getString(FAVORITE_MOVIES, null);
-            Log.i("be5", favoritesJSON);
             favoritesList = getGson().fromJson(favoritesJSON, new TypeToken<ArrayList<Movie>>() {
             }.getType());
 
