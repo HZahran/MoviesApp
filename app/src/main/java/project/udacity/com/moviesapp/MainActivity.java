@@ -6,14 +6,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,7 +21,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import project.udacity.com.moviesapp.Adapters.MoviesAdapter;
 import project.udacity.com.moviesapp.Models.MoviesModel;
 import project.udacity.com.moviesapp.Models.Movie;
 

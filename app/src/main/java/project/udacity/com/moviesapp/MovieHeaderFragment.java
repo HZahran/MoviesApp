@@ -3,7 +3,6 @@ package project.udacity.com.moviesapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,6 @@ import it.sephiroth.android.library.picasso.Picasso;
 import project.udacity.com.moviesapp.Models.Movie;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MovieHeaderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MovieHeaderFragment extends Fragment {
     private static final String MOVIE_INSTANCE = "MOVIE_INSTANCE";
 

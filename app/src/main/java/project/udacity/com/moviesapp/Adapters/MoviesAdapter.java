@@ -1,11 +1,9 @@
 package project.udacity.com.moviesapp.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -16,11 +14,9 @@ import project.udacity.com.moviesapp.MyApplication;
 public class MoviesAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<String> moviePostersPaths;
-    private MyApplication app;
 
     public MoviesAdapter(Context c, ArrayList<String> moviePostersPaths, MyApplication app) {
         mContext = c;
-        this.app = app;
         this.moviePostersPaths = moviePostersPaths;
     }
 
@@ -45,7 +41,7 @@ public class MoviesAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        String posterUrl = app.POSTERS_BASE_URL + moviePostersPaths.get(position);
+        String posterUrl = MyApplication.POSTERS_BASE_URL + moviePostersPaths.get(position);
         Picasso.with(mContext).load(posterUrl).into(imageView);
 
         return imageView;

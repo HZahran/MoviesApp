@@ -1,16 +1,8 @@
 package project.udacity.com.moviesapp;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,8 +14,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import project.udacity.com.moviesapp.Adapters.ReviewsAdapter;
-import project.udacity.com.moviesapp.Adapters.VideosAdapter;
+
 import project.udacity.com.moviesapp.Models.Movie;
 import project.udacity.com.moviesapp.Models.Review;
 import project.udacity.com.moviesapp.Models.ReviewsModel;

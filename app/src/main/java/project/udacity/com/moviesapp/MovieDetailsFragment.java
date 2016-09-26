@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,6 @@ public class MovieDetailsFragment extends Fragment {
     private MyApplication app;
 
     public MovieDetailsFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -74,20 +74,19 @@ public class MovieDetailsFragment extends Fragment {
 
 
     public void updateVideos(List<Video> videosData) {
-        trailerListView.setAdapter(null);
-        VideosAdapter videosAdapter = new VideosAdapter(getActivity(), videosData, app);
+        Log.i("be5",trailerListView+"");
+        VideosAdapter videosAdapter = new VideosAdapter(getActivity(), videosData);
         trailerListView.setAdapter(videosAdapter);
     }
 
     public void updateReviews(List<Review> reviewsData) {
-        reviewListView.setAdapter(null);
-        final ReviewsAdapter reviewsAdapter = new ReviewsAdapter(getActivity(), reviewsData, app);
+        final ReviewsAdapter reviewsAdapter = new ReviewsAdapter(getActivity(), reviewsData);
         reviewListView.setAdapter(reviewsAdapter);
 
         //Review Dialog
         reviewDialog(reviewsData);
     }
-    
+
     public void reviewDialog(final List<Review> reviewsData) {
         AlertDialog.Builder reviewDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
